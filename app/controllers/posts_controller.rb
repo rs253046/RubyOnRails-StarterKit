@@ -14,7 +14,11 @@ def new
 end
  
 def create
-  @post = Post.new(post_params)
+	
+
+ 
+  @post = current_user.posts.new(post_params)
+  # @post.user_id = current_user.id
  
   if @post.save
     redirect_to @post
@@ -25,10 +29,13 @@ end
 
   def edit
     @post = Post.find(params[:id])
+    @post.user_id = current_user.id
+
   end
  
   def update
     @post = Post.find(params[:id])
+    @post.user_id = current_user.id
  
     if @post.update(params[:post].permit(:title, :body))
       redirect_to @post
@@ -39,6 +46,7 @@ end
 
   def destroy
     @post = Post.find(params[:id])
+    @post.user_id = current_user.id
     @post.destroy
  
     redirect_to posts_path
